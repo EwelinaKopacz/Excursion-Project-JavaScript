@@ -43,3 +43,7 @@ ul {
     margin-bottom: 20px;
     padding-bottom: 20px;
 }
+
+.hide__prototype {
+    display:none;
+}
