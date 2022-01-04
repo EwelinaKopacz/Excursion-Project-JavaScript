@@ -74,7 +74,7 @@ function createNewExcursion(columnData){ //F-cja: utworzenie i odpowiednich elem
     excursionsItem.classList.add('hide__prototype');
 }
 
-// II CZEŚĆ: DODAWANIE WYCIECZEK DO LISTY ZAMÓWIONYCH
+// II CZEŚĆ: DODAWANIE WYCIECZEK DO LISTY ZAMÓWIONYCH:
 //1. Sprawdzenie czy wpisana wartość jest liczbą i wyswietlenie blędu
 //2. Obsługa inputów przyjmujących ilość osób
 //3. Wywołanie zdarzenia po kliknięciu w przycisk "dodaj do zamowienia"
@@ -127,6 +127,7 @@ function showErrors(errors){
 }
 
 //2. Obsługa inputów przyjmujących ilość osób
+
 
 
 
