@@ -30,7 +30,62 @@ ul {
     margin: 10px;
     padding: 20px;
     width: calc(50% - 20px);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
+
+.excursions__header {
+    padding-bottom:10px;
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+}
+
+.excursions__form {
+    padding-bottom:10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height:20%;
+}
+
+.excursions__title {
+    padding: 10px 0;
+    border-bottom: 1.5px solid rgb(44, 96, 148);
+    color:rgb(44, 96, 148);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+.excursions__description {
+    padding:8px 0;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+}
+
+.excursions__field {
+    padding:6px 0;
+}
+
+.excursions__field-input{
+    border:none;
+    border-bottom: 1px solid rgb(44, 96, 148);
+    height: 25px;
+}
+
+.excursions__field-input--submit{
+    border:none;
+    width: 100%;
+    height:50px;
+    letter-spacing: 0.5px;
+    background-color: rgb(44, 96, 148);
+    color:white;
+    text-transform: uppercase;
+}
+
+.excursions__field-name{
+    letter-spacing: 0.5px;
+}
+
+
 
 .panel__form {
     background-color: #f4f4f4;
@@ -47,3 +102,4 @@ ul {
 .hide__prototype {
     display:none;
 }
+
