@@ -72,19 +72,34 @@ function createNewExcursion(columnData){ //F-cja: utworzenie i odpowiednich elem
 
 // II CZEŚĆ: DODAWANIE WYCIECZEK DO LISTY ZAMÓWIONYCH:
 // 1.Pobranie danych z inputów
-panelExcursions.addEventListener('change',function(e){
+    panelExcursions.addEventListener('click',function(e){
+    e.preventDefault();
+    console.log('e.currentTarget: ', e.currentTarget);
+    console.log('e.Target: ', e.target);
+    e.stopPropagation();
+    const pickedExcursion = e.currentTarget;
+    if(pickedExcursion.hasChildNodes()){
+        const children = pickedExcursion.children;
+       for(let i=0;i<children.length; i++){
+           if(children[i].hasAttribute('data-id-excursion')){
+               const get = children[i].getAttribute('data-id-excursion');
+               console.log(get);
+           }
+    }
+}
+
     console.log('e.currentTarget: ', e.currentTarget);
     console.log('e.Target: ', e.target);
 
-    if(e.target.name ==="adults"){
-        const getAdultsNumber = e.target.value;
-        console.log(getAdultsNumber);
-    }
+    // if(e.target.name ==="adults"){
+    //     const getAdultsNumber = e.target.value;
+    //     console.log(getAdultsNumber);
+    // }
 
-    if(e.target.name ==="children"){
-        const getChildrenNumber = e.target.value;
-        console.log(getChildrenNumber);
-    }
+    // if(e.target.name ==="children"){
+    //     const getChildrenNumber = e.target.value;
+    //     console.log(getChildrenNumber);
+    // }
 });
 
 
