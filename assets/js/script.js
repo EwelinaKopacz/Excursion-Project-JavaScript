@@ -4,11 +4,6 @@ const pickedFile = document.querySelector('.uploader__input');
 const panelExcursions = document.querySelector('.panel__excursions');
 const excursionsItem = document.querySelector('.excursions__item');
 
-const formElement = excursionsItem.querySelector('.excursions__form');
-const getAdultsNumber = excursionsItem.querySelector('input[name="adults"]');
-const getChildrenNumber = excursionsItem.querySelector('input[name="children"]');
-const errorMessage = document.createElement('p');
-
 pickedFile.addEventListener('change', handleFile);
 
 function handleFile(e){ // F-cja: obsługa wybierania pliku przez użytkownika
@@ -65,6 +60,7 @@ function createNewExcursion(columnData){ //F-cja: utworzenie i odpowiednich elem
         const priceAdult = item[3];
         const priceChild = item[4];
 
+        excursionsItemCopy.setAttribute('data-id-excursion', id);
         excursionsItemCopy.querySelector('.excursions__title').innerText = title;
         excursionsItemCopy.querySelector('.excursions__description').innerText = description;
         const priceItems = excursionsItemCopy.querySelectorAll('.excursions__price');
@@ -75,66 +71,127 @@ function createNewExcursion(columnData){ //F-cja: utworzenie i odpowiednich elem
 }
 
 // II CZEŚĆ: DODAWANIE WYCIECZEK DO LISTY ZAMÓWIONYCH:
+// 1.Pobranie danych z inputów
+panelExcursions.addEventListener('change',function(e){
+    console.log('e.currentTarget: ', e.currentTarget);
+    console.log('e.Target: ', e.target);
+
+    if(e.target.name ==="adults"){
+        const getAdultsNumber = e.target.value;
+        console.log(getAdultsNumber);
+    }
+
+    if(e.target.name ==="children"){
+        const getChildrenNumber = e.target.value;
+        console.log(getChildrenNumber);
+    }
+});
+
+
+
+
+
+
+
+
+// const getAdultsNumber = excursionsItem.querySelector('input[name="adults"]');
+// const getChildrenNumber = excursionsItem.querySelector('input[name="children"]');
+// const errorMessage = document.createElement('p');
+
+//KOPIA DO SPR DZIALANIA
 //1. Sprawdzenie czy wpisana wartość jest liczbą i wyswietlenie blędu
-//2. Obsługa inputów przyjmujących ilość osób
-//3. Wywołanie zdarzenia po kliknięciu w przycisk "dodaj do zamowienia"
-//4. Dodanie do koszyka elementu zawierającego podsumowanie wybranych wycieczek
-//5. Aktualizacja ceny za całą wycieczke - zmiana wartości w koszyku
-//6. Dodanie działania do usuwania wycieczek
-
-//1. Sprawdzenie czy wpisana wartość jest liczbą i wyswietlenie blędu
-formElement.addEventListener('submit',checkData);
-
-function checkData(e){
-    e.preventDefault();
-    const errorsArray = [];
-    if(!checkIfNumber(getAdultsNumber.value)){
-        errorsArray.push(getAdultsNumber);
-    }
-    if(!checkIfNumber(getChildrenNumber.value)){
-        errorsArray.push(getChildrenNumber);
-    }
-    console.log(errorsArray)
-    showErrors(errorsArray);
-}
-
-function checkIfNumber(item){
-    const regExp = /^[0-9]/;
-    if(item.match(regExp)){
-        return item;
-    }
-    return false;
-}
-
-function showErrors(errors){
-    getAdultsNumber.style.color = "black";
-    getChildrenNumber.style.color = "black";
-    errorMessage.innerText = " ";
-
-    if(errors.length>0){
-        errorMessage.innerText = "Wprowadzona wartość musi byc liczbą";
-        errorMessage.style.color = "red";
-        const firstElForm = document.querySelector('.excursions__field');
-        firstElForm.prepend(errorMessage); // method inserts a set of Node objects or DOMString objects before the first child of the Element
-
-        errors.forEach(function(item){
-            item.style.color = "red";
-        })
-    }
-    else{
-        formElement.submit();
-    }
-}
-
-//2. Obsługa inputów przyjmujących ilość osób
+//2. Wywołanie zdarzenia i dodanie elementów do koszyka po kliknięciu w przycisk "dodaj do zamowienia"
+//3. Wypełnienie elementów odpowiednimi danymi
+//4. Aktualizacja ceny za całą wycieczke - zmiana wartości w koszyku
+//5. Dodanie działania do usuwania wycieczek
 
 
+// function checkData(e){
+//     e.preventDefault();
+//     const errorValue = [];
+//     const correctValue = [];
+//     if(!checkIfNumber(getAdultsNumber.value)){
+//         errorValue.push(getAdultsNumber);
+//     }
+//     else {
+//         correctValue.push(getAdultsNumber.value);
+//     }
+//     if(!checkIfNumber(getChildrenNumber.value)){
+//         errorValue.push(getChildrenNumber);
+//     }
+//     else{
+//         correctValue.push(getChildrenNumber.value);
+//     }
+//     showErrors(errorValue,correctValue);
+// }
+
+
+// function checkIfNumber(item){
+//     const regExp = /^[0-9]/;
+//     if(item.match(regExp)){
+//         return item;
+//     }
+//     return false;
+// }
+
+// function showErrors(errors,correctValue){
+//     getAdultsNumber.style.color = "black";
+//     getChildrenNumber.style.color = "black";
+//     errorMessage.innerText = " ";
+
+//     if(errors.length>0){
+//         errorMessage.innerText = "Wprowadzona wartość musi byc liczbą";
+//         errorMessage.style.color = "red";
+//         const firstElForm = document.querySelector('.excursions__field');
+//         firstElForm.prepend(errorMessage); // method inserts a set of Node objects or DOMString objects before the first child of the Element
+
+//         errors.forEach(function(item){
+//             item.style.color = "red";
+//         })
+//     }
+//     else{
+//         getAdultsNumber.value = "";
+//         getChildrenNumber.value = "";
+//         const summaryPanel = document.querySelector('.panel__summary');
+//         const summaryItem = summaryPanel.querySelector('.summary__item');
+//         const summaryItemCopy = summaryItem.cloneNode(true);
+//         summaryPanel.appendChild(summaryItemCopy);
+
+
+//         const totalCost = (correctValue[0] * 99)+(correctValue[1] * 50);
+//         console.log(totalCost);
+//         summaryItemCopy.querySelector('.summary__name').innerText = "Ogrodzieniec2";
+//         summaryItemCopy.querySelector('.summary__total-price').innerText = totalCost + ' PLN';
+//         summaryItemCopy.querySelector('.summary__prices').innerHTML = "dorośli: " + correctValue[0] + " x 99PLN, dzieci: " + correctValue[1] + " x 50 PLN";
+//     }
+// }
 
 
 
+// panelExcursions.addEventListener('change',function(e){
+//     console.log('e.currentTarget: ', e.currentTarget);
+//     console.log('e.Target: ', e.target);
 
+//     let valuesInCorrect = [];
+//     let valuesCorrect = [];
+//     if(e.target.name ==="adults"){
+//         const getAdultsNumber = e.target.value;
+//         console.log(getAdultsNumber);
 
+//         if(!checkIfNumber(getAdultsNumber)){
+//             valuesInCorrect.push(e.target.name);
+//         }else{
+//             valuesCorrect.push(getAdultsNumber);
+//         }
+//     }
 
-
-
-
+//     if(e.target.name ==="children"){
+//         const getChildrenNumber = e.target.value;
+//         checkIfNumber(getChildrenNumber);
+//         if(!checkIfNumber(getChildrenNumber)){
+//             valuesInCorrect.push(e.target.name);
+//         }else{
+//             valuesCorrect.push(getChildrenNumber);
+//         }
+//     }
+// });
