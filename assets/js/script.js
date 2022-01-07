@@ -3,6 +3,8 @@
 const pickedFile = document.querySelector('.uploader__input');
 const panelExcursions = document.querySelector('.panel__excursions');
 const excursionsItem = document.querySelector('.excursions__item');
+const summaryPanel = document.querySelector('.panel__summary');
+const summaryItem = document.querySelector('.summary__item');
 
 pickedFile.addEventListener('change', handleFile);
 
@@ -71,47 +73,44 @@ function createNewExcursion(columnData){ //F-cja: utworzenie i odpowiednich elem
 }
 
 // II CZEŚĆ: DODAWANIE WYCIECZEK DO LISTY ZAMÓWIONYCH:
-// 1.Pobranie danych z inputów
-    panelExcursions.addEventListener('click',function(e){
-    e.preventDefault();
-    console.log('e.currentTarget: ', e.currentTarget);
-    console.log('e.Target: ', e.target);
-    e.stopPropagation();
-    const pickedExcursion = e.currentTarget;
-    if(pickedExcursion.hasChildNodes()){
-        const children = pickedExcursion.children;
-       for(let i=0;i<children.length; i++){
-           if(children[i].hasAttribute('data-id-excursion')){
-               const get = children[i].getAttribute('data-id-excursion');
-               console.log(get);
-           }
+    panelExcursions.addEventListener('submit',function(e){ // 1.Dodanie zdarzenia submit i pobranie wybranej wycieczki;
+        e.preventDefault();
+        const targetEl = e.target;
+        const pickedExcursion = targetEl.parentElement;
+        getDataExcursion(pickedExcursion);
+    });
+
+    function getDataExcursion(pickedExcursion){ // 2.Pobranie szczegóły danej wycieczki;
+        const basket = [];
+        console.log(pickedExcursion);
+        const excursionForm = pickedExcursion.querySelector('.excursions__form');
+        const excursionPrices = excursionForm.querySelectorAll('.excursions__price');
+
+        const id = pickedExcursion.getAttribute('data-id-excursion');
+        const title = pickedExcursion.querySelector('.excursions__title').innerText;
+        const adultNumber= excursionForm.elements.adults.value;
+        const adultPrice = excursionPrices[0].innerText;
+        const childNumber= excursionForm.elements.children.value;
+        const childPrice = excursionPrices[1].innerText;
+
+        basket.push({id:id, title:title, adultNumber:adultNumber,adultPrice:adultPrice,childNumber:childNumber,childPrice:childPrice}); //Utworzenie obiektu w tablicy;
+        console.log(basket);
+        showDataExcursion(basket);
     }
-}
 
-    console.log('e.currentTarget: ', e.currentTarget);
-    console.log('e.Target: ', e.target);
+    function showDataExcursion(excursionDetails){ // 3.Wyswietlenie szczegółów danej wycieczki;
+        const summaryItemCopy = summaryItem.cloneNode(true);
+        summaryPanel.appendChild(summaryItemCopy);
 
-    // if(e.target.name ==="adults"){
-    //     const getAdultsNumber = e.target.value;
-    //     console.log(getAdultsNumber);
-    // }
+        const countPrice = (excursionDetails[0]['adultNumber'] * excursionDetails[0]['adultPrice'] + excursionDetails[0]['childNumber'] * excursionDetails[0]['childPrice']);
 
-    // if(e.target.name ==="children"){
-    //     const getChildrenNumber = e.target.value;
-    //     console.log(getChildrenNumber);
-    // }
-});
+        const summaryName = summaryItem.querySelector('.summary__name').innerText = excursionDetails[0]['title'];
+        const totalPrice = summaryItem.querySelector('.summary__total-price').innerText = countPrice + ' PLN';
+        const summaryDescription = summaryItem.querySelector('.summary__prices').innerText = "dorośli: " + excursionDetails[0]['adultNumber'] + " x " + excursionDetails[0]['adultPrice'] +  " PLN, " + " dzieci: " + excursionDetails[0]['childNumber'] + " x " + excursionDetails[0]['childPrice'] + " PLN ";
+    }
 
 
 
-
-
-
-
-
-// const getAdultsNumber = excursionsItem.querySelector('input[name="adults"]');
-// const getChildrenNumber = excursionsItem.querySelector('input[name="children"]');
-// const errorMessage = document.createElement('p');
 
 //KOPIA DO SPR DZIALANIA
 //1. Sprawdzenie czy wpisana wartość jest liczbą i wyswietlenie blędu
