@@ -85,12 +85,10 @@ ul {
     letter-spacing: 0.5px;
 }
 
-
-
 .panel__form {
     background-color: #f4f4f4;
     padding: 20px;
-    width: 30%;
+    width: 35%;
 }
 
 .uploader, .order {
@@ -103,3 +101,46 @@ ul {
     display:none;
 }
 
+.uploader__label{
+    font-size:18px;
+}
+.uploader__input{
+    padding:10px 0;
+    border:none;
+}
+
+.order__total-price{
+    font-size:18px;
+    font-weight: 600;
+    padding:5px 0;
+}
+
+.order__field{
+    padding: 5px 0;
+}
+
+.order__field-name {
+    font-size:17px;
+    padding:5px 0;
+
+}
+
+.order__field-submit {
+    border:none;
+    margin-top:20px;
+    width: 100%;
+    text-transform: uppercase;
+    padding:15px 0;
+    background-color: rgb(44, 96, 148);
+    letter-spacing: 1px;
+    color:white;
+    font-size: 15px;
+}
+
+.order__field-input{
+    border:none;
+}
+
+.summary__item{
+    padding: 10px 0;
+}

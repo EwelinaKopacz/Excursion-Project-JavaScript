@@ -4,6 +4,8 @@ const pickedFile = document.querySelector('.uploader__input');
 const panelExcursions = document.querySelector('.panel__excursions');
 const excursionsItem = document.querySelector('.excursions__item');
 const panelSummary = document.querySelector('.panel__summary');
+const orderForm = document.querySelector('.order');
+const errorMessage = document.createElement('ul');
 
 
 pickedFile.addEventListener('change', handleFile);
@@ -15,14 +17,9 @@ panelExcursions.addEventListener('submit',function(e){ // 1.Dodanie zdarzenia su
     getDataExcursion(pickedExcursion);
 });
 
-panelSummary.addEventListener('click', function(e){
-    e.preventDefault();
-    if(e.target.classList.contains('summary__btn-remove')){
-        const btnClicked = e.target;
-        removeExcursion(btnClicked);
-    }
-});
+panelSummary.addEventListener('click', removeExcursion);
 
+orderForm.addEventListener('submit', checkOrderForm);
 
 function handleFile(e){ // F-cja: obsługa wybierania pliku przez użytkownika
     const file = e.target.files[0];
@@ -90,7 +87,7 @@ function createNewExcursion(columnData){ //F-cja: utworzenie i odpowiednich elem
 
 // II CZEŚĆ: DODAWANIE WYCIECZEK DO LISTY ZAMÓWIONYCH:
 
-function getDataExcursion(pickedExcursion){ // 2.Pobranie szczegołow danej wycieczki, ilosc doroslych
+function getDataExcursion(pickedExcursion){ // 1.Pobranie szczegołow danej wycieczki, ilosc doroslych
     const basket = [];
     console.log(pickedExcursion);
     const excursionForm = pickedExcursion.querySelector('.excursions__form');
@@ -108,7 +105,7 @@ function getDataExcursion(pickedExcursion){ // 2.Pobranie szczegołow danej wyci
     showDataExcursion(basket);
 }
 
-function showDataExcursion(excursionDetails){ // 3.Wyswietlenie szczegółów danej wycieczki;
+function showDataExcursion(excursionDetails){ // 2.Wyswietlenie szczegółów danej wycieczki;
     const summaryPanel = document.querySelector('.panel__summary');
     const summaryItemCopy = summaryPanel.firstElementChild.cloneNode(true);
     summaryItemCopy.classList.remove('summary__item--prototype');
@@ -122,7 +119,7 @@ function showDataExcursion(excursionDetails){ // 3.Wyswietlenie szczegółów da
     getSumPrice();
 }
 
-function getSumPrice(){ // Aktualizacja ceny za całą wycieczke - zmiana wartości w koszyku
+function getSumPrice(){ // 3.Aktualizacja ceny za całą wycieczke - zmiana wartości w koszyku
     const summaryPanel = document.querySelector('.panel__summary');
     const allPrices = summaryPanel.querySelectorAll('.summary__total-price');
     const arrayCost= [];
@@ -136,25 +133,72 @@ function getSumPrice(){ // Aktualizacja ceny za całą wycieczke - zmiana warto�
         orderSum +=arrayCost[i];
     }
     document.querySelector('.order__total-price-value').innerText = orderSum + " PLN ";
+    return orderSum;
 }
 
-function removeExcursion(btnClicked){ //Usuwanie wycieczek
-    const btnParent = btnClicked.parentElement;
-    while (btnParent.hasChildNodes()) {
-        btnParent.removeChild(btnParent.firstChild);
-    }
+function removeExcursion(e){ // 4.Usuwanie wycieczek
+    e.preventDefault();
+    if(e.target.classList.contains('summary__btn-remove')){
+        const btnClicked = e.target;
+        const btnParent = btnClicked.parentElement;
+        while (btnParent.hasChildNodes()) {
+            btnParent.removeChild(btnParent.firstChild);
+        }
     btnParent.nextElementSibling.classList.add('hide__prototype');
+    }
 }
-
-
 
 // 3. OBSŁUGA FORMULARZA ZAMOWIENIA
 
+function checkOrderForm(e){
+    e.preventDefault();
+    let errors = [];
+    console.log(e.target.elements.name);
 
+    const takePersonalData = e.target.elements.name.value;
+    if(!checkPersonData(takePersonalData)){
+        errors.push('Wpisz poprawne imie i nazwisko (tylko litery)');
+    };
+    const takeEmail = e.target.elements.email.value;
+    if(!checkEmail(takeEmail)){
+        errors.push('Wpisz poprawny adres email');
+    };
+    showErrors(errors);
+}
 
+function checkPersonData(dataPerson){
+    const regExp = /^[a-zA-Z]{2,30}/;
+    if(dataPerson.match(regExp)){
+        return dataPerson;
+    }
+    return false;
+}
 
+function checkEmail(dataEmail){
+    const regExp = /^[-\w\.]+@([-\w]+\.)+[a-z]+$/i;
+    if(dataEmail.match(regExp)){
+        return dataEmail;
+    }
+    return false;
+}
 
-
+function showErrors(errorsArray){
+    if(errorsArray.length>0){
+        orderForm.appendChild(errorMessage);
+        errorMessage.innerHTML = '';
+        errorsArray.forEach(function(item){
+            const errorInfoLi = document.createElement('li');
+            errorInfoLi.innerText = item;
+            errorInfoLi.style.color = 'red';
+            errorMessage.appendChild(errorInfoLi);
+        });
+    }
+    else {
+        orderForm.submit(alert('Wiadomość została wysłana'));
+    }
+}
 
 // BRAKUJE
-// 1. SPR czy podana wartosc jest liczba 
+// 1. SPR czy podana wartosc jest liczba , wyswietlenie bledow + czyszczenie inputów
+// 2. Zmniejszanie wartosic w koszyku - calej sumy
+// 3. Alert o wyslaniu, brkuje info z kwota i adres email na jaki została wyslana informacja
