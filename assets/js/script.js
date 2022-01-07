@@ -3,10 +3,26 @@
 const pickedFile = document.querySelector('.uploader__input');
 const panelExcursions = document.querySelector('.panel__excursions');
 const excursionsItem = document.querySelector('.excursions__item');
-const summaryPanel = document.querySelector('.panel__summary');
-const summaryItem = document.querySelector('.summary__item');
+const panelSummary = document.querySelector('.panel__summary');
+
 
 pickedFile.addEventListener('change', handleFile);
+
+panelExcursions.addEventListener('submit',function(e){ // 1.Dodanie zdarzenia submit i pobranie wybranej wycieczki;
+    e.preventDefault();
+    const targetEl = e.target;
+    const pickedExcursion = targetEl.parentElement;
+    getDataExcursion(pickedExcursion);
+});
+
+panelSummary.addEventListener('click', function(e){
+    e.preventDefault();
+    if(e.target.classList.contains('summary__btn-remove')){
+        const btnClicked = e.target;
+        removeExcursion(btnClicked);
+    }
+});
+
 
 function handleFile(e){ // F-cja: obsługa wybierania pliku przez użytkownika
     const file = e.target.files[0];
@@ -73,139 +89,72 @@ function createNewExcursion(columnData){ //F-cja: utworzenie i odpowiednich elem
 }
 
 // II CZEŚĆ: DODAWANIE WYCIECZEK DO LISTY ZAMÓWIONYCH:
-    panelExcursions.addEventListener('submit',function(e){ // 1.Dodanie zdarzenia submit i pobranie wybranej wycieczki;
-        e.preventDefault();
-        const targetEl = e.target;
-        const pickedExcursion = targetEl.parentElement;
-        getDataExcursion(pickedExcursion);
+
+function getDataExcursion(pickedExcursion){ // 2.Pobranie szczegołow danej wycieczki, ilosc doroslych
+    const basket = [];
+    console.log(pickedExcursion);
+    const excursionForm = pickedExcursion.querySelector('.excursions__form');
+    const excursionPrices = excursionForm.querySelectorAll('.excursions__price');
+
+    const id = pickedExcursion.getAttribute('data-id-excursion');
+    const title = pickedExcursion.querySelector('.excursions__title').innerText;
+    const adultNumber= excursionForm.elements.adults.value;
+    const adultPrice = excursionPrices[0].innerText;
+    const childNumber= excursionForm.elements.children.value;
+    const childPrice = excursionPrices[1].innerText;
+
+    // const checkValue =[adultNumber,childNumber];
+    basket.push({id:id, title:title, adultNumber:adultNumber,adultPrice:adultPrice,childNumber:childNumber,childPrice:childPrice}); //Utworzenie obiektu w tablicy;
+    showDataExcursion(basket);
+}
+
+function showDataExcursion(excursionDetails){ // 3.Wyswietlenie szczegółów danej wycieczki;
+    const summaryPanel = document.querySelector('.panel__summary');
+    const summaryItemCopy = summaryPanel.firstElementChild.cloneNode(true);
+    summaryItemCopy.classList.remove('summary__item--prototype');
+    summaryPanel.appendChild(summaryItemCopy);
+
+    const countPrice = (excursionDetails[0]['adultNumber'] * excursionDetails[0]['adultPrice'] + excursionDetails[0]['childNumber'] * excursionDetails[0]['childPrice']);
+
+    summaryItemCopy.querySelector('.summary__name').innerText = excursionDetails[0]['title'];
+    summaryItemCopy.querySelector('.summary__total-price').innerText = countPrice + ' PLN';
+    summaryItemCopy.querySelector('.summary__prices').innerText = "dorośli: " + excursionDetails[0]['adultNumber'] + " x " + excursionDetails[0]['adultPrice'] +  " PLN, " + " dzieci: " + excursionDetails[0]['childNumber'] + " x " + excursionDetails[0]['childPrice'] + " PLN ";
+    getSumPrice();
+}
+
+function getSumPrice(){ // Aktualizacja ceny za całą wycieczke - zmiana wartości w koszyku
+    const summaryPanel = document.querySelector('.panel__summary');
+    const allPrices = summaryPanel.querySelectorAll('.summary__total-price');
+    const arrayCost= [];
+    allPrices.forEach(function(item){
+        const priceExcursions = parseInt(item.innerText);
+        arrayCost.push(priceExcursions);
     });
 
-    function getDataExcursion(pickedExcursion){ // 2.Pobranie szczegóły danej wycieczki;
-        const basket = [];
-        console.log(pickedExcursion);
-        const excursionForm = pickedExcursion.querySelector('.excursions__form');
-        const excursionPrices = excursionForm.querySelectorAll('.excursions__price');
-
-        const id = pickedExcursion.getAttribute('data-id-excursion');
-        const title = pickedExcursion.querySelector('.excursions__title').innerText;
-        const adultNumber= excursionForm.elements.adults.value;
-        const adultPrice = excursionPrices[0].innerText;
-        const childNumber= excursionForm.elements.children.value;
-        const childPrice = excursionPrices[1].innerText;
-
-        basket.push({id:id, title:title, adultNumber:adultNumber,adultPrice:adultPrice,childNumber:childNumber,childPrice:childPrice}); //Utworzenie obiektu w tablicy;
-        console.log(basket);
-        showDataExcursion(basket);
+    let orderSum = 0;
+    for(let i=1;i<arrayCost.length;i++){
+        orderSum +=arrayCost[i];
     }
+    document.querySelector('.order__total-price-value').innerText = orderSum + " PLN ";
+}
 
-    function showDataExcursion(excursionDetails){ // 3.Wyswietlenie szczegółów danej wycieczki;
-        const summaryItemCopy = summaryItem.cloneNode(true);
-        summaryPanel.appendChild(summaryItemCopy);
-
-        const countPrice = (excursionDetails[0]['adultNumber'] * excursionDetails[0]['adultPrice'] + excursionDetails[0]['childNumber'] * excursionDetails[0]['childPrice']);
-
-        const summaryName = summaryItem.querySelector('.summary__name').innerText = excursionDetails[0]['title'];
-        const totalPrice = summaryItem.querySelector('.summary__total-price').innerText = countPrice + ' PLN';
-        const summaryDescription = summaryItem.querySelector('.summary__prices').innerText = "dorośli: " + excursionDetails[0]['adultNumber'] + " x " + excursionDetails[0]['adultPrice'] +  " PLN, " + " dzieci: " + excursionDetails[0]['childNumber'] + " x " + excursionDetails[0]['childPrice'] + " PLN ";
+function removeExcursion(btnClicked){ //Usuwanie wycieczek
+    const btnParent = btnClicked.parentElement;
+    while (btnParent.hasChildNodes()) {
+        btnParent.removeChild(btnParent.firstChild);
     }
+    btnParent.nextElementSibling.classList.add('hide__prototype');
+}
+
+
+
+// 3. OBSŁUGA FORMULARZA ZAMOWIENIA
 
 
 
 
-//KOPIA DO SPR DZIALANIA
-//1. Sprawdzenie czy wpisana wartość jest liczbą i wyswietlenie blędu
-//2. Wywołanie zdarzenia i dodanie elementów do koszyka po kliknięciu w przycisk "dodaj do zamowienia"
-//3. Wypełnienie elementów odpowiednimi danymi
-//4. Aktualizacja ceny za całą wycieczke - zmiana wartości w koszyku
-//5. Dodanie działania do usuwania wycieczek
-
-
-// function checkData(e){
-//     e.preventDefault();
-//     const errorValue = [];
-//     const correctValue = [];
-//     if(!checkIfNumber(getAdultsNumber.value)){
-//         errorValue.push(getAdultsNumber);
-//     }
-//     else {
-//         correctValue.push(getAdultsNumber.value);
-//     }
-//     if(!checkIfNumber(getChildrenNumber.value)){
-//         errorValue.push(getChildrenNumber);
-//     }
-//     else{
-//         correctValue.push(getChildrenNumber.value);
-//     }
-//     showErrors(errorValue,correctValue);
-// }
-
-
-// function checkIfNumber(item){
-//     const regExp = /^[0-9]/;
-//     if(item.match(regExp)){
-//         return item;
-//     }
-//     return false;
-// }
-
-// function showErrors(errors,correctValue){
-//     getAdultsNumber.style.color = "black";
-//     getChildrenNumber.style.color = "black";
-//     errorMessage.innerText = " ";
-
-//     if(errors.length>0){
-//         errorMessage.innerText = "Wprowadzona wartość musi byc liczbą";
-//         errorMessage.style.color = "red";
-//         const firstElForm = document.querySelector('.excursions__field');
-//         firstElForm.prepend(errorMessage); // method inserts a set of Node objects or DOMString objects before the first child of the Element
-
-//         errors.forEach(function(item){
-//             item.style.color = "red";
-//         })
-//     }
-//     else{
-//         getAdultsNumber.value = "";
-//         getChildrenNumber.value = "";
-//         const summaryPanel = document.querySelector('.panel__summary');
-//         const summaryItem = summaryPanel.querySelector('.summary__item');
-//         const summaryItemCopy = summaryItem.cloneNode(true);
-//         summaryPanel.appendChild(summaryItemCopy);
-
-
-//         const totalCost = (correctValue[0] * 99)+(correctValue[1] * 50);
-//         console.log(totalCost);
-//         summaryItemCopy.querySelector('.summary__name').innerText = "Ogrodzieniec2";
-//         summaryItemCopy.querySelector('.summary__total-price').innerText = totalCost + ' PLN';
-//         summaryItemCopy.querySelector('.summary__prices').innerHTML = "dorośli: " + correctValue[0] + " x 99PLN, dzieci: " + correctValue[1] + " x 50 PLN";
-//     }
-// }
 
 
 
-// panelExcursions.addEventListener('change',function(e){
-//     console.log('e.currentTarget: ', e.currentTarget);
-//     console.log('e.Target: ', e.target);
-
-//     let valuesInCorrect = [];
-//     let valuesCorrect = [];
-//     if(e.target.name ==="adults"){
-//         const getAdultsNumber = e.target.value;
-//         console.log(getAdultsNumber);
-
-//         if(!checkIfNumber(getAdultsNumber)){
-//             valuesInCorrect.push(e.target.name);
-//         }else{
-//             valuesCorrect.push(getAdultsNumber);
-//         }
-//     }
-
-//     if(e.target.name ==="children"){
-//         const getChildrenNumber = e.target.value;
-//         checkIfNumber(getChildrenNumber);
-//         if(!checkIfNumber(getChildrenNumber)){
-//             valuesInCorrect.push(e.target.name);
-//         }else{
-//             valuesCorrect.push(getChildrenNumber);
-//         }
-//     }
-// });
+// BRAKUJE
+// 1. SPR czy podana wartosc jest liczba 

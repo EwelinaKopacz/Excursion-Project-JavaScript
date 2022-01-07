@@ -99,7 +99,7 @@ ul {
     padding-bottom: 20px;
 }
 
-.hide__prototype {
+.hide__prototype, .summary__item--prototype {
     display:none;
 }
 
