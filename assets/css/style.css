@@ -122,7 +122,6 @@ ul {
 .order__field-name {
     font-size:17px;
     padding:5px 0;
-
 }
 
 .order__field-submit {
@@ -143,4 +142,17 @@ ul {
 
 .summary__item{
     padding: 10px 0;
+}
+
+.summary__btn-remove{
+    text-decoration: none;
+    font-size: 12px;
+    color:rgb(221, 50, 50);
+    position: absolute;
+    padding:0 3px;
+    bottom:50%;
+}
+
+.summary__title{
+    position: relative;
 }

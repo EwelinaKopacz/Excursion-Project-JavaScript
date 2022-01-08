@@ -1,16 +1,14 @@
-// I CZEŚĆ: ŁADOWANIE WYCIECZEK
-
 const pickedFile = document.querySelector('.uploader__input');
 const panelExcursions = document.querySelector('.panel__excursions');
 const excursionsItem = document.querySelector('.excursions__item');
 const panelSummary = document.querySelector('.panel__summary');
 const orderForm = document.querySelector('.order');
-const errorMessage = document.createElement('ul');
+let errorMessage = document.createElement('ul');
 
 
 pickedFile.addEventListener('change', handleFile);
 
-panelExcursions.addEventListener('submit',function(e){ // 1.Dodanie zdarzenia submit i pobranie wybranej wycieczki;
+panelExcursions.addEventListener('submit',function(e){
     e.preventDefault();
     const targetEl = e.target;
     const pickedExcursion = targetEl.parentElement;
@@ -18,15 +16,14 @@ panelExcursions.addEventListener('submit',function(e){ // 1.Dodanie zdarzenia su
 });
 
 panelSummary.addEventListener('click', removeExcursion);
-
 orderForm.addEventListener('submit', checkOrderForm);
 
-function handleFile(e){ // F-cja: obsługa wybierania pliku przez użytkownika
+function handleFile(e){
     const file = e.target.files[0];
     handleText(file);
 }
 
-function handleText(file){ // F-cja pobrany plik czytaj: readAsText
+function handleText(file){
     if(file){
         const reader = new FileReader();
         reader.readAsText(file, 'UTF-8');
@@ -37,37 +34,36 @@ function handleText(file){ // F-cja pobrany plik czytaj: readAsText
     }
 }
 
-function handleLoad(e){ // F-cja: pobranie zawartości pliku
+function handleLoad(e){
     const resultData= e.target.result;
     splitDataAsLines(resultData);
     splitDataAsColumns(lineData);
 }
 
-function splitDataAsLines(file){ // F-cja: podział tej zawartości na wiersze (wycieczki)
-    return lineData = file.split(/[\r\n]+/gm); // - g - Zwracaj wszystkie pasujące fragmenty, a nie tylko pierwszy; - m - Szukaj w tekście złożonym z kilku linii.
+function splitDataAsLines(file){
+    return lineData = file.split(/[\r\n]+/gm);
 }
 
-function splitDataAsColumns(file){ //F-cja: odział wiersza na poszczególne elementy (id, nazwa itp.)
+function splitDataAsColumns(file){
     const columnData = [];
-    const regExp = new RegExp(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))"); // Podzial danych
+    const regExp = new RegExp(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
     for (let i=0; i<file.length; i++) {
         const splitLine = file[i].split(regExp);
         const splitItem = [];
             for (let j=0; j<splitLine.length; j++) {
-                splitItem.push(splitLine[j].replace(/^"|"$/g, '')); //Usunięcie quotes na początku i na końcu
+                splitItem.push(splitLine[j].replace(/^"|"$/g, ''));
                 }
         columnData.push(splitItem);
     }
     createNewExcursion(columnData);
 }
 
-function createNewExcursion(columnData){ //F-cja: utworzenie i odpowiednich elementów HTML, dodanie innerText z tablicy i dodanie ich do drzewa DOM
+function createNewExcursion(columnData){
     for(let i=0; i<columnData.length; i++){
         const excursionsItemCopy = excursionsItem.cloneNode(true);
         panelExcursions.appendChild(excursionsItemCopy);
 
-        const item  = columnData[i]; // do zmiennej przypisujemy tablice po kolei tablica z index 0, potem 1
-        // console.log(item);
+        const item  = columnData[i];
 
         const id = item[0];
         const title = item[1];
@@ -85,9 +81,7 @@ function createNewExcursion(columnData){ //F-cja: utworzenie i odpowiednich elem
     excursionsItem.classList.add('hide__prototype');
 }
 
-// II CZEŚĆ: DODAWANIE WYCIECZEK DO LISTY ZAMÓWIONYCH:
-
-function getDataExcursion(pickedExcursion){ // 1.Pobranie szczegołow danej wycieczki, ilosc doroslych
+function getDataExcursion(pickedExcursion){
     const basket = [];
     console.log(pickedExcursion);
     const excursionForm = pickedExcursion.querySelector('.excursions__form');
@@ -95,17 +89,28 @@ function getDataExcursion(pickedExcursion){ // 1.Pobranie szczegołow danej wyci
 
     const id = pickedExcursion.getAttribute('data-id-excursion');
     const title = pickedExcursion.querySelector('.excursions__title').innerText;
-    const adultNumber= excursionForm.elements.adults.value;
+    const adultNumber= Number(excursionForm.elements.adults.value);
     const adultPrice = excursionPrices[0].innerText;
-    const childNumber= excursionForm.elements.children.value;
+    const childNumber= Number(excursionForm.elements.children.value);
     const childPrice = excursionPrices[1].innerText;
 
-    // const checkValue =[adultNumber,childNumber];
-    basket.push({id:id, title:title, adultNumber:adultNumber,adultPrice:adultPrice,childNumber:childNumber,childPrice:childPrice}); //Utworzenie obiektu w tablicy;
-    showDataExcursion(basket);
+    const errors =[];
+
+    if(Number.isNaN(adultNumber)) {
+        errors.push('Podana wartość dla pola dorosły nie jest liczbą!');
+        alert(errors);
+    }
+    if(Number.isNaN(childNumber)) {
+        errors.push('Podana wartość dla pola dziecko nie jest liczbą!');
+        alert(errors);
+    }
+    else{
+        basket.push({id:id, title:title, adultNumber:adultNumber,adultPrice:adultPrice,childNumber:childNumber,childPrice:childPrice});
+        showDataExcursion(basket);
+    }
 }
 
-function showDataExcursion(excursionDetails){ // 2.Wyswietlenie szczegółów danej wycieczki;
+function showDataExcursion(excursionDetails){
     const summaryPanel = document.querySelector('.panel__summary');
     const summaryItemCopy = summaryPanel.firstElementChild.cloneNode(true);
     summaryItemCopy.classList.remove('summary__item--prototype');
@@ -113,13 +118,13 @@ function showDataExcursion(excursionDetails){ // 2.Wyswietlenie szczegółów da
 
     const countPrice = (excursionDetails[0]['adultNumber'] * excursionDetails[0]['adultPrice'] + excursionDetails[0]['childNumber'] * excursionDetails[0]['childPrice']);
 
-    summaryItemCopy.querySelector('.summary__name').innerText = excursionDetails[0]['title'];
+    summaryItemCopy.querySelector('.summary__name').innerText = excursionDetails[0]['title'] + ':';
     summaryItemCopy.querySelector('.summary__total-price').innerText = countPrice + ' PLN';
     summaryItemCopy.querySelector('.summary__prices').innerText = "dorośli: " + excursionDetails[0]['adultNumber'] + " x " + excursionDetails[0]['adultPrice'] +  " PLN, " + " dzieci: " + excursionDetails[0]['childNumber'] + " x " + excursionDetails[0]['childPrice'] + " PLN ";
     getSumPrice();
 }
 
-function getSumPrice(){ // 3.Aktualizacja ceny za całą wycieczke - zmiana wartości w koszyku
+function getSumPrice(){
     const summaryPanel = document.querySelector('.panel__summary');
     const allPrices = summaryPanel.querySelectorAll('.summary__total-price');
     const arrayCost= [];
@@ -136,24 +141,18 @@ function getSumPrice(){ // 3.Aktualizacja ceny za całą wycieczke - zmiana wart
     return orderSum;
 }
 
-function removeExcursion(e){ // 4.Usuwanie wycieczek
+function removeExcursion(e){
     e.preventDefault();
     if(e.target.classList.contains('summary__btn-remove')){
-        const btnClicked = e.target;
-        const btnParent = btnClicked.parentElement;
-        while (btnParent.hasChildNodes()) {
-            btnParent.removeChild(btnParent.firstChild);
-        }
-    btnParent.nextElementSibling.classList.add('hide__prototype');
+        const btnClickParent = e.target.parentElement.parentElement;
+        btnClickParent.remove();
+        getSumPrice();
     }
 }
-
-// 3. OBSŁUGA FORMULARZA ZAMOWIENIA
 
 function checkOrderForm(e){
     e.preventDefault();
     let errors = [];
-    console.log(e.target.elements.name);
 
     const takePersonalData = e.target.elements.name.value;
     if(!checkPersonData(takePersonalData)){
@@ -163,7 +162,7 @@ function checkOrderForm(e){
     if(!checkEmail(takeEmail)){
         errors.push('Wpisz poprawny adres email');
     };
-    showErrors(errors);
+    showErrors(errors,takeEmail);
 }
 
 function checkPersonData(dataPerson){
@@ -182,7 +181,7 @@ function checkEmail(dataEmail){
     return false;
 }
 
-function showErrors(errorsArray){
+function showErrors(errorsArray,userEmail){
     if(errorsArray.length>0){
         orderForm.appendChild(errorMessage);
         errorMessage.innerHTML = '';
@@ -194,11 +193,8 @@ function showErrors(errorsArray){
         });
     }
     else {
-        orderForm.submit(alert('Wiadomość została wysłana'));
+        const totalCostToShowUser = getSumPrice();
+        console.log(totalCostToShowUser);
+        orderForm.submit(alert('Dziękujemy za złożenie zamówienia o wartości: ' + totalCostToShowUser + ' PLN. Szczegóły zamówienia zostały wysłane na adres e-mail: ' + userEmail));
     }
 }
-
-// BRAKUJE
-// 1. SPR czy podana wartosc jest liczba , wyswietlenie bledow + czyszczenie inputów
-// 2. Zmniejszanie wartosic w koszyku - calej sumy
-// 3. Alert o wyslaniu, brkuje info z kwota i adres email na jaki została wyslana informacja
