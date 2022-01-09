@@ -6,15 +6,8 @@ const orderForm = document.querySelector('.order');
 const orderTotalPrice = orderForm.querySelector('.order__total-price');
 let errorMessage = document.createElement('ul');
 
-
 pickedFile.addEventListener('change', handleFile);
-panelExcursions.addEventListener('submit',function(e){
-    e.preventDefault();
-    const targetEl = e.target;
-    const pickedExcursion = targetEl.parentElement;
-    getDataExcursion(pickedExcursion);
-});
-
+panelExcursions.addEventListener('submit',getDataExcursion);
 panelSummary.addEventListener('click', removeExcursion);
 orderForm.addEventListener('submit', checkOrderForm);
 
@@ -81,7 +74,9 @@ function createNewExcursion(columnData){
     excursionsItem.classList.add('hide__prototype');
 }
 
-function getDataExcursion(pickedExcursion){
+function getDataExcursion(e){
+    e.preventDefault();
+    const pickedExcursion = e.target.parentElement;
     const basket = [];
     const excursionForm = pickedExcursion.querySelector('.excursions__form');
     const excursionPrices = excursionForm.querySelectorAll('.excursions__price');
@@ -194,7 +189,6 @@ function checkEmail(dataEmail){
 function showErrors(errorsArray,userEmail){
     if(errorsArray.length>0){
         errorMessage = orderForm.insertBefore(errorMessage,orderTotalPrice)
-        // orderForm.appendChild(errorMessage);
         errorMessage.innerHTML = '';
         errorsArray.forEach(function(item){
             const errorInfoLi = document.createElement('li');
@@ -205,7 +199,6 @@ function showErrors(errorsArray,userEmail){
     }
     else {
         const totalCostToShowUser = getSumPrice();
-        console.log(totalCostToShowUser);
         orderForm.submit(alert('Dziękujemy za złożenie zamówienia o wartości: ' + totalCostToShowUser + ' PLN. Szczegóły zamówienia zostały wysłane na adres e-mail: ' + userEmail));
     }
 }
