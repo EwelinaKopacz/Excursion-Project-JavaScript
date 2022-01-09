@@ -3,11 +3,11 @@ const panelExcursions = document.querySelector('.panel__excursions');
 const excursionsItem = document.querySelector('.excursions__item');
 const panelSummary = document.querySelector('.panel__summary');
 const orderForm = document.querySelector('.order');
+const orderTotalPrice = orderForm.querySelector('.order__total-price');
 let errorMessage = document.createElement('ul');
 
 
 pickedFile.addEventListener('change', handleFile);
-
 panelExcursions.addEventListener('submit',function(e){
     e.preventDefault();
     const targetEl = e.target;
@@ -193,7 +193,8 @@ function checkEmail(dataEmail){
 
 function showErrors(errorsArray,userEmail){
     if(errorsArray.length>0){
-        orderForm.appendChild(errorMessage);
+        errorMessage = orderForm.insertBefore(errorMessage,orderTotalPrice)
+        // orderForm.appendChild(errorMessage);
         errorMessage.innerHTML = '';
         errorsArray.forEach(function(item){
             const errorInfoLi = document.createElement('li');
