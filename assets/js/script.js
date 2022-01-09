@@ -83,31 +83,41 @@ function createNewExcursion(columnData){
 
 function getDataExcursion(pickedExcursion){
     const basket = [];
-    console.log(pickedExcursion);
     const excursionForm = pickedExcursion.querySelector('.excursions__form');
     const excursionPrices = excursionForm.querySelectorAll('.excursions__price');
 
     const id = pickedExcursion.getAttribute('data-id-excursion');
     const title = pickedExcursion.querySelector('.excursions__title').innerText;
-    const adultNumber= Number(excursionForm.elements.adults.value);
+    const adultNumber= excursionForm.elements.adults.value;
     const adultPrice = excursionPrices[0].innerText;
-    const childNumber= Number(excursionForm.elements.children.value);
+    const childNumber= excursionForm.elements.children.value;
     const childPrice = excursionPrices[1].innerText;
 
     const errors =[];
-
-    if(Number.isNaN(adultNumber)) {
-        errors.push('Podana wartość dla pola dorosły nie jest liczbą!');
+    if(!checkIfNumber(adultNumber) || !checkIfNumber(childNumber)){
+        errors.push('Błędne dane, wpisz liczbę.');
         alert(errors);
+        clearInputValue(excursionForm.elements.adults);
+        clearInputValue(excursionForm.elements.children);
     }
-    if(Number.isNaN(childNumber)) {
-        errors.push('Podana wartość dla pola dziecko nie jest liczbą!');
-        alert(errors);
-    }
-    else{
+    else {
         basket.push({id:id, title:title, adultNumber:adultNumber,adultPrice:adultPrice,childNumber:childNumber,childPrice:childPrice});
         showDataExcursion(basket);
+        clearInputValue(excursionForm.elements.adults);
+        clearInputValue(excursionForm.elements.children);
     }
+}
+
+function checkIfNumber(value){
+    const regExp = /^[0-9]*$/;
+    if(value.match(regExp)){
+        return value;
+    }
+    return false;
+}
+
+function clearInputValue(input){
+    return input.value = '';
 }
 
 function showDataExcursion(excursionDetails){
