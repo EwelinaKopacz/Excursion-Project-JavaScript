@@ -5,6 +5,7 @@ const panelSummary = document.querySelector('.panel__summary');
 const orderForm = document.querySelector('.order');
 const orderTotalPrice = orderForm.querySelector('.order__total-price');
 let errorMessage = document.createElement('ul');
+const currentTotalCost = document.querySelector('.order__total-price-value');
 
 pickedFile.addEventListener('change', handleFile);
 panelExcursions.addEventListener('submit',getDataExcursion);
@@ -72,6 +73,7 @@ function createNewExcursion(columnData){
         priceItems[1].innerText = priceChild;
     }
     excursionsItem.classList.add('hide__prototype');
+    currentTotalCost.innerText = '0 PLN';
 }
 
 function getDataExcursion(e){
@@ -142,7 +144,7 @@ function getSumPrice(){
     for(let i=1;i<arrayCost.length;i++){
         orderSum +=arrayCost[i];
     }
-    document.querySelector('.order__total-price-value').innerText = orderSum + " PLN ";
+    currentTotalCost.innerText = orderSum + " PLN ";
     return orderSum;
 }
 
