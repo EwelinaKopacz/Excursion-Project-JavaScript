@@ -1,13 +1,16 @@
-# Project JavaScript Form
+# JavaScript Form - Excursion Project
 
 ## About the project:
 In this project I had to add the logical structure using JavaScript. I had to plan all the functionality and decided what steps should I take to make it work. I got a very basic HTML and CSS structure and CSV file with two example excursion.
 
 * Hypothetical client after loading a file, should get a two excursion with detailed about them. I had to create the function to handle the file, split the data and remove unnecessary signs using regular expression.
 
-* After choosing the excursion client should type the number of adults and children. In this place, I created functionality to check what kind of data was typed. If data wasn't numbers client see the information about that data was inccorect. If the value will be the number, client get a summary of excursion: number the adults, childen and summary the cost. Client can remove the excursion clicked the sign "x", after that the total cost will be calculated.
+* After choosing the excursion client can type the number of adults and children. In this place, I this step I created functionality to check what kind of data was typed. If data wasn't numbers client see the information about the wrong value. If the value will be the number, client get a summary of excursion: number the adults, childen and cost. Client can remove the excursion clicked the sign "x", after that the total cost will be calculated.
 
-* In the last step, client can order the excursion, using order form. In this place I creted functionality to check what kind of data was typed. Name, last name and email is checking using regular expression. If data is incorrect, client will get a message what kind of data is incorrect. When data is fine, client can finish the order and will get confirm the order like: thanks for order, information about total cost of the excursion and information that summary was sent to the email which was typed in order field.
+* In the last step, client can order the excursions using order form. In this step I creted functionality to check what kind of data was typed. Name and last name should contains only characters. Email is checking using regular expression /^[-\w.]+@([-\w]+.)+[a-z]+$/i. If data is incorrect, client will get an alert what kind of data should change. If data is fine, the order is finish and client will get the confirm with information:
+    * "thank you for the order"
+    * about total cost of the excursion
+    * that summary was sent to the email which was typed in order field.
 
 
 ## How to use
