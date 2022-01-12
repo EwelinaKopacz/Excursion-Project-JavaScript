@@ -1,7 +1,7 @@
 # JavaScript Form - Excursion Project
 
 ## About the project:
-The aim of this project was create functionality like: load excursions form CSV file and presented them in a correct way, add a number of participants by client and show the summary, and posibility to make an order. 
+The aim of this project was create functionality like: load excursions form CSV file and presented them in a correct way, add a number of participants by client and show the summary, and posibility to make an order.
 
 I had to plan all the functionality (from scratch using JavaScript) and decided what steps should I take to make it work. I got a very basic HTML and CSS (appearance was improve too) structure and CSV file with two excursion's example.
 
