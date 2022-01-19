@@ -30,7 +30,7 @@ Please upload the example.csv file to see how it work. You can find the file att
 * Live Site URL: [E.Kopacz JS Form Excursion Project](https://ekopacz-js-form-project.netlify.app)
 
 ## Solutions
-By creating this project I had a opportunity to practice:
+By creating this project I had an opportunity to practice:
 * creating code based on a few smaller functions
 * creating and adding differents types of events
 * creating functions to check if data in inputs is correct before sending the form
