@@ -19,14 +19,12 @@ I had to plan all the functionality (from scratch using JavaScript) and decided 
 Please upload the example.csv file to see how it work. You can find the file attached to  this project.
 
 ## Technologies:
-
 * JavaScript
 * HTML
 * CSS
 * Desktop only version
 
 ## Links
-
 * Live Site URL: [E.Kopacz JS Form Excursion Project](https://ekopacz-js-form-project.netlify.app)
 
 ## Solutions
@@ -70,18 +68,15 @@ function handleText(file){
     }
 }
 ```
-
-### Feel free to contact me:
-
-* [Linkedin](https://www.linkedin.com/in/ewelina-kopacz-929559100/) - Ewelina Kopacz
-
 ### Project preview
-
 Added excursions to the summary
 ![Project-preview](./assets/preview/screen1.png)
 
 Order form validation
 ![Project-preview](./assets/preview/screen2.png)
+
+### Feel free to contact me:
+* [Linkedin](https://www.linkedin.com/in/ewelina-kopacz-929559100/) - Ewelina Kopacz
 
 ### Sources:
 * [Typeofnan.dev](https://typeofnan.dev/how-to-bind-event-listeners-on-dynamically-created-elements-in-javascript/) - event listeners to dynamically-created elements in JavaScript
