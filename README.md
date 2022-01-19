@@ -91,4 +91,4 @@ Order form validation
 
 
 ### Thanks for project and support to Mateusz Bogolubow:
-* Mentor i Trener Programowania JavaScript - [See a website](https://devmentor.pl/) - Mateusz Bogolubow
+* Mentor i Trener Programowania JavaScript - [DevMentor](https://devmentor.pl/) - Mateusz Bogolubow
