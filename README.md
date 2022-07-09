@@ -87,14 +87,14 @@ Added excursions to the summary
 Order form validation
 ![Project-preview](./assets/preview/screen2.png)
 
-### Feel free to contact me:
+### Feel free to contact me
 * [Linkedin](https://www.linkedin.com/in/ewelina-kopacz-929559100/) - Ewelina Kopacz
 
-### Sources:
+### Sources
 * [Typeofnan.dev](https://typeofnan.dev/how-to-bind-event-listeners-on-dynamically-created-elements-in-javascript/) - event listeners to dynamically-created elements in JavaScript
 * [Codegrepper.com](https://www.codegrepper.com/code-examples/javascript/REMOVE+all+children+from+div+javascript) - how to remove all children
 * [Pretagteam.com](https://pretagteam.com/question/remove-quotes-from-array-javascript) - how to remove quotes from array using regular expressions
 * [Web Dev Simplified](https://www.youtube.com/watch?v=rhzKDrUiJVk&t=113s) - amaizing video about regular expressions
 
-### Thanks for project and support to Mateusz Bogolubow:
+### Thanks for project and support to Mateusz Bogolubow
 * Mentor i Trener Programowania JavaScript - [DevMentor](https://devmentor.pl/) - Mateusz Bogolubow
