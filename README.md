@@ -1,6 +1,18 @@
 # JavaScript Form - Excursion Project
 
-## About the project:
+## Table of Contents
+1. [About the project](#about-the-project)
+2. [How to use it](#how-to-use-it)
+3. [Technologies](#technologies)
+4. [Links](#links)
+5. [Solutions](#solutions)
+6. [Project preview](#project-preview)
+7. [Contact](#feel-free-to-contact-me)
+8. [Sources](#sources)
+9. [Thanks](#thanks-for-project-and-support-to-Mateusz-Bogolubow)
+
+
+## About the project
 The aim of this project was create functionality like: load excursions form CSV file and presented them in a correct way, add a number of participants by client and show the summary, and posibility to make an order.
 
 I had to plan all the functionality (from scratch using JavaScript) and decided what steps should I take to make it work. I got a very basic HTML and CSS (appearance was improve too) structure and CSV file with two excursion's example.
@@ -18,7 +30,7 @@ I had to plan all the functionality (from scratch using JavaScript) and decided 
 ## How to use it
 Please upload the example.csv file to see how it work. You can find the file attached to  this project.
 
-## Technologies:
+## Technologies
 * JavaScript
 * HTML
 * CSS
@@ -83,7 +95,6 @@ Order form validation
 * [Codegrepper.com](https://www.codegrepper.com/code-examples/javascript/REMOVE+all+children+from+div+javascript) - how to remove all children
 * [Pretagteam.com](https://pretagteam.com/question/remove-quotes-from-array-javascript) - how to remove quotes from array using regular expressions
 * [Web Dev Simplified](https://www.youtube.com/watch?v=rhzKDrUiJVk&t=113s) - amaizing video about regular expressions
-
 
 ### Thanks for project and support to Mateusz Bogolubow:
 * Mentor i Trener Programowania JavaScript - [DevMentor](https://devmentor.pl/) - Mateusz Bogolubow
